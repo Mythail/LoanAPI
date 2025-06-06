@@ -1,0 +1,35 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: loan-api-app
+    volumes:
+      - ./basic:/var/www/html
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: loan-api-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./basic:/var/www/html
+      - ./docker/nginx/api.conf:/etc/nginx/conf.d/api.conf
+    depends_on:
+      - app
+
+  db:
+    image: postgres:17
+    container_name: loan-api-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
