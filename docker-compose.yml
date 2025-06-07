@@ -5,7 +5,8 @@ services:
       dockerfile: docker/php/Dockerfile
     container_name: loan-api-app
     volumes:
-      - ./basic:/var/www/html
+      - ./app:/var/www/html
+      - ./.env:/var/www/.env
 
   nginx:
     image: nginx:stable-alpine
@@ -13,7 +14,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./basic:/var/www/html
+      - ./app:/var/www/html
       - ./docker/nginx/api.conf:/etc/nginx/conf.d/api.conf
     depends_on:
       - app

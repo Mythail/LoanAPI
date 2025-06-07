@@ -2,7 +2,7 @@
 
 namespace tests\unit\models;
 
-use app\models\ContactForm;
+use app\models\RequestForm;
 use yii\mail\MessageInterface;
 
 class ContactFormTest extends \Codeception\Test\Unit
@@ -14,7 +14,7 @@ class ContactFormTest extends \Codeception\Test\Unit
 
     public function testEmailIsSentOnContact()
     {
-        $model = new ContactForm();
+        $model = new RequestForm();
 
         $model->attributes = [
             'name' => 'Tester',
