@@ -2,16 +2,21 @@
 
 namespace app\controllers;
 
-use Yii;
+use app\actions\RequestProcessAction;
+use Override;
 use yii\web\Controller;
-use yii\web\Response;
+
+/**
+ * @noinspection PhpUnused
+ */
 
 class ProcessorController extends Controller
 {
-    public function actionProcess(): Response|string
+    #[Override]
+    public function actions(): array
     {
-        $response = Yii::$app->response;
-
-        return $response->statusText = 'processed';
+        return [
+            'process' => RequestProcessAction::class,
+        ];
     }
 }

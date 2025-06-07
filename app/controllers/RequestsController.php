@@ -2,16 +2,21 @@
 
 namespace app\controllers;
 
-use Yii;
+use app\actions\RequestCreateAction;
+use Override;
 use yii\web\Controller;
-use yii\web\Response;
+
+/**
+ * @noinspection PhpUnused
+ */
 
 class RequestsController extends Controller
 {
-    public function actionRequest(): Response|string
+    #[Override]
+    public function actions(): array
     {
-        $response = Yii::$app->response;
-
-        return $response->statusText = 'requested';
+        return [
+            'create' => RequestCreateAction::class,
+        ];
     }
 }

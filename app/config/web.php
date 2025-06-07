@@ -44,7 +44,11 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => true,
             'rules' => [
-                'POST requests' => 'requests/request',
+                // По требованиям ТЗ сейчас необходим только метод POST,
+                // поэтому используется обычный контроллер.
+                // Если представить, что в будущем, потребуется расширить API (например, добавить PATCH/DELETE для заявок),
+                // можно будет перейти на использование ActiveController для данной модели.
+                'POST requests' => 'requests/create',
                 'GET processor' => 'processor/process',
             ],
         ],
