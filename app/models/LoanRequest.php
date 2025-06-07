@@ -45,6 +45,8 @@ class LoanRequest extends ActiveRecord
             [['user_id', 'amount', 'term'], 'required'],
             // Типы параметров
             [['user_id', 'amount', 'term'], 'integer'],
+            // Валидация значений
+            [['amount', 'term'], 'number', 'min' => 1],
         ];
     }
 }

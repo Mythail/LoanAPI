@@ -12,4 +12,4 @@ $dotenv->load();
 
 $config = require __DIR__ . '/../config/web.php';
 
-(new yii\web\Application($config))->run();
+new yii\web\Application($config)->run();

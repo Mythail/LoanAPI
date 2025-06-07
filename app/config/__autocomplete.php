@@ -19,15 +19,8 @@ class Yii {
 }
 
 /**
- * @property yii\rbac\DbManager $authManager 
- * @property \yii\web\User|__WebUser $user
+ * @property yii\rbac\DbManager $authManager
  * 
  */
 class __Application {
-}
-
-/**
- * @property app\models\User $identity
- */
-class __WebUser {
 }

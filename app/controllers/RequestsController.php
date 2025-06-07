@@ -4,13 +4,12 @@ namespace app\controllers;
 
 use app\actions\RequestCreateAction;
 use Override;
-use yii\web\Controller;
 
 /**
  * @noinspection PhpUnused
  */
 
-class RequestsController extends Controller
+class RequestsController extends ApiController
 {
     #[Override]
     public function actions(): array
