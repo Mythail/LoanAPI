@@ -3,8 +3,8 @@
 namespace app\actions;
 
 use app\components\ResponseHelper;
-use app\enums\LoanStatus;
 use app\models\LoanRequest;
+use app\services\LoanService;
 use Codeception\Util\HttpCode;
 use Yii;
 use yii\base\Action;
@@ -21,8 +21,10 @@ class RequestCreateAction extends Action
             return ResponseHelper::jsonError();
         }
 
+        $loanService = new LoanService();
+
         // проверка, нет ли одобренных заявок
-        if ($this->hasApprovedRequest($modelRequest->user_id)) {
+        if ($loanService->hasApprovedRequest($modelRequest->user_id)) {
             return ResponseHelper::jsonError();
         }
 
@@ -41,22 +43,5 @@ class RequestCreateAction extends Action
         }
 
         return ResponseHelper::jsonError(HttpCode::INTERNAL_SERVER_ERROR);
-    }
-
-    /**
-     * Проверяет, есть ли у пользователя одобренные заявки
-     *
-     * @param int $userId ID пользователя
-     *
-     * @return bool
-     */
-    public function hasApprovedRequest(int $userId): bool
-    {
-        return LoanRequest::find()
-            ->where([
-                'user_id' => $userId,
-                'status'  => LoanStatus::APPROVED->value
-            ])
-            ->exists();
     }
 }
