@@ -3,6 +3,7 @@
 namespace app\actions;
 
 use app\models\LoanRequest;
+use Codeception\Util\HttpCode;
 use Yii;
 use yii\base\Action;
 use yii\db\Exception;
@@ -18,11 +19,14 @@ class RequestCreateAction extends Action
         $modelRequest->load(Yii::$app->request->post(), '');
 
         if (!$modelRequest->validate()) {
+            Yii::$app->response->statusCode = HttpCode::BAD_REQUEST;
             return ['result' => false];
         }
 
         try {
             if ($modelRequest->save()) {
+                Yii::$app->response->statusCode = HttpCode::CREATED;
+
                 return [
                     'result' => true,
                     'id'     => $modelRequest->id
@@ -32,6 +36,7 @@ class RequestCreateAction extends Action
             Yii::error('Failed to save the loan request: ' . $e->getMessage());
         }
 
+        Yii::$app->response->statusCode = HttpCode::INTERNAL_SERVER_ERROR;
         return ['result' => false];
     }
 }
