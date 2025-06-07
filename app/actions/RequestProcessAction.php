@@ -44,8 +44,8 @@ class RequestProcessAction extends Action
                 // Ожидание перед принятием решения...
                 sleep($delay);
 
-                // 10% шанс одобрения
-                $approve = mt_rand(1, 10) === 1;
+                // Решаем, принять или отклонить
+                $approve = mt_rand(1, Yii::$app->params['loanApprovalChance']) === 1;
 
                 $request->status = $approve
                     ? LoanStatus::APPROVED->value
