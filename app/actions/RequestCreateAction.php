@@ -2,41 +2,61 @@
 
 namespace app\actions;
 
+use app\components\ResponseHelper;
+use app\enums\LoanStatus;
 use app\models\LoanRequest;
 use Codeception\Util\HttpCode;
 use Yii;
 use yii\base\Action;
 use yii\db\Exception;
-use yii\web\Response;
 
 class RequestCreateAction extends Action
 {
     public function run(): array
     {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
         $modelRequest = new LoanRequest();
         $modelRequest->load(Yii::$app->request->post(), '');
 
         if (!$modelRequest->validate()) {
-            Yii::$app->response->statusCode = HttpCode::BAD_REQUEST;
-            return ['result' => false];
+            return ResponseHelper::jsonError();
+        }
+
+        // проверка, нет ли одобренных заявок
+        if ($this->hasApprovedRequest($modelRequest->user_id)) {
+            return ResponseHelper::jsonError();
         }
 
         try {
             if ($modelRequest->save()) {
-                Yii::$app->response->statusCode = HttpCode::CREATED;
-
-                return [
-                    'result' => true,
-                    'id'     => $modelRequest->id
-                ];
+                return ResponseHelper::jsonSuccess(
+                    data: [
+                        'result' => true,
+                        'id'     => $modelRequest->id
+                    ],
+                    statusCode: HttpCode::CREATED
+                );
             }
         } catch (Exception $e) {
             Yii::error('Failed to save the loan request: ' . $e->getMessage());
         }
 
-        Yii::$app->response->statusCode = HttpCode::INTERNAL_SERVER_ERROR;
-        return ['result' => false];
+        return ResponseHelper::jsonError(HttpCode::INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * Проверяет, есть ли у пользователя одобренные заявки
+     *
+     * @param int $userId ID пользователя
+     *
+     * @return bool
+     */
+    public function hasApprovedRequest(int $userId): bool
+    {
+        return LoanRequest::find()
+            ->where([
+                'user_id' => $userId,
+                'status'  => LoanStatus::APPROVED->value
+            ])
+            ->exists();
     }
 }
