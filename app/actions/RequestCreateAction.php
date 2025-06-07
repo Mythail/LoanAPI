@@ -5,7 +5,6 @@ namespace app\actions;
 use app\components\ResponseHelper;
 use app\models\LoanRequest;
 use app\services\LoanService;
-use Codeception\Util\HttpCode;
 use Yii;
 use yii\base\Action;
 use yii\db\Exception;
@@ -35,13 +34,13 @@ class RequestCreateAction extends Action
                         'result' => true,
                         'id'     => $modelRequest->id
                     ],
-                    statusCode: HttpCode::CREATED
+                    statusCode: 201
                 );
             }
         } catch (Exception $e) {
             Yii::error('Failed to save the loan request: ' . $e->getMessage());
         }
 
-        return ResponseHelper::jsonError(HttpCode::INTERNAL_SERVER_ERROR);
+        return ResponseHelper::jsonError(500);
     }
 }

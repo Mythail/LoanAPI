@@ -2,7 +2,6 @@
 
 namespace app\components;
 
-use Codeception\Util\HttpCode;
 use Yii;
 use yii\web\Response;
 
@@ -16,7 +15,7 @@ class ResponseHelper
      *
      * @return array
      */
-    public static function jsonSuccess(array $data = [], int $statusCode = HttpCode::OK): array
+    public static function jsonSuccess(array $data = [], int $statusCode = 200): array
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
         Yii::$app->response->statusCode = $statusCode;
@@ -34,7 +33,7 @@ class ResponseHelper
      *
      * @return array
      */
-    public static function jsonError(int $statusCode = HttpCode::BAD_REQUEST): array
+    public static function jsonError(int $statusCode = 400): array
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
         Yii::$app->response->statusCode = $statusCode;
