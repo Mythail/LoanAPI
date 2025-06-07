@@ -2,16 +2,19 @@
 
 namespace app\models;
 
+use app\enums\LoanStatus;
 use Override;
 use yii\db\ActiveRecord;
 
 /**
- * Модель формы подачи заявки на займ
+ * Модель заявки на займ
  *
  * @property int|null $id ID заявки
  * @property int $user_id ID пользователя, подающего заявку
  * @property int $amount Сумма займа, которую пользователь запрашивает
  * @property int $term Срок займа в днях
+ * @property string $status Статус рассмотрения
+ * @property string $created_at Дата и время подачи
  */
 class LoanRequest extends ActiveRecord
 {
@@ -22,6 +25,13 @@ class LoanRequest extends ActiveRecord
     public static function tableName(): string
     {
         return 'requests';
+    }
+
+    #[Override]
+    public function init(): void
+    {
+        parent::init();
+        $this->status = LoanStatus::PENDING->value;
     }
 
     /**
