@@ -12,7 +12,7 @@ services:
     image: nginx:stable-alpine
     container_name: loan-api-nginx
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - ./app:/var/www/html
       - ./docker/nginx/api.conf:/etc/nginx/conf.d/api.conf
