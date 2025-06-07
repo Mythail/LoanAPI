@@ -1,5 +1,9 @@
 <?php
 
+use yii\caching\FileCache;
+use yii\log\FileTarget;
+use yii\web\JsonParser;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -16,7 +20,7 @@ $config = [
             'cookieValidationKey' => '',
             'enableCsrfValidation' => false,
             'parsers' => [
-                'application/json' => 'yii\web\JsonParser',
+                'application/json' => JsonParser::class,
             ],
         ],
         'response' => [
@@ -24,7 +28,7 @@ $config = [
             'charset' => 'UTF-8',
         ],
         'cache' => [
-            'class' => 'yii\caching\FileCache',
+            'class' => FileCache::class,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -33,7 +37,7 @@ $config = [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
             ],
