@@ -7,6 +7,8 @@ services:
     volumes:
       - ./app:/var/www/html
       - ./.env:/var/www/.env
+    extra_hosts:
+      - "localhost:host-gateway"
 
   nginx:
     image: nginx:stable-alpine
